@@ -95,6 +95,7 @@ Scaffold
         เป็น widget ที่ไม่สามารถเปลี่ยนแปลงค่าได้ ใช้สำหรับสร้าง Widget แบบคงที่ เช่น Text, icon เป็นต้น 
     - Stateful widget 
         เป็น widget ที่สามารถเปลี่ยนแปลงค่าได้ หรือทำงานได้หลาย State เช่น Checkbox, Slider, TextField เป็นต้น 
+        คือมีการเปลี่ยนแปลงข้อมูลได้ในขณะที่ run app อยู่
 
 Stateless Widget
     ให้พิมพ์​ stl จะมี suggest ขึ้นมา แนะนำคำสั่ง Flutter Create Stateless Widget ประมาณนี้ ก็เลือกไป จะมี template ขึ้นมาให้เรา
@@ -319,7 +320,7 @@ Container Widget
     BoxDecoration 
         - สำหรับกำหนดรูปร่างของ container เช่น สี ลักษณะรูปร่างของ container เป็นต้น 
     Padding 
-        - กำหนดระยะห่างของ widget ออกจากขอบของ layout
+        - กำหนดระยะห่างของ widget ออกจากขอบของ layout เช่น ขอบหน้าจอ
     Column 
         - ใช้แสดง widget ย่อย (child) ในแนวตั้ง 
     Row 
@@ -327,5 +328,152 @@ Container Widget
     Expanded 
         - ใช้ขยายความสูงของ widget ย่อย (child) ที่ต้องการ โดยทำการจัดสรรพื้นที่ของ Widget ย่อย (child)ให้เต็มพื้นที่ 
         โดยดูจากพื้นที่ว่างที่เหลือในหน้าจอ (คล้ายๆกับ flexbox ใน css) และมีการกำหนดพื้นที่ผ่าน flex properties 
-    
-    
+
+
+Padding 
+
+body: Padding(
+          padding: const EdgeInsets.all(
+              8.0), // ทำให้มี space จาก ขอบ layout ทุกด้าน 8.0 (required field padding)
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround, **** ปัญหา คือ ถ้าไม่ใส่ตรงนี้ container ก็จะติดกัน
+            children: [
+              Container(
+                padding: const EdgeInsets.all(
+                    10), // ทำให้ใน layout มีขอบด้านใน 10 ทำให้เนืื้อหาด้านในก็จะห่างออกจากขอบ
+                // สร้าง container
+                decoration: BoxDecoration(
+                    color: Colors.blueAccent,
+                    borderRadius: BorderRadius.circular(
+                        10)), // ระบุคุณสมบัติของกล่อง container เช่น สี, โค้ง, ... (ยิ่ง เลข circular เยอะ ก็ยิ่งโค้งเยอะ)
+                height: 150,
+                child: Row(
+                  children: [
+                    Text("Balance: ",
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold)),
+                    Text("99999999999 Baht ",
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(
+                    10), // ทำให้ใน layout มีขอบด้านใน 10 ทำให้เนืื้อหาด้านในก็จะห่างออกจากขอบ
+                // สร้าง container อยากได้หลายกล่องก็เพิ่ม container เข้าไปอีก
+                decoration: BoxDecoration(
+                    color: Colors.green.shade500,
+                    borderRadius: BorderRadius.circular(
+                        10)), // ระบุคุณสมบัติของกล่อง container เช่น สี, โค้ง, ... (ยิ่ง เลข circular เยอะ ก็ยิ่งโค้งเยอะ)
+                height: 150,
+                child: Row(
+                  children: [
+                    Text("Income: ",
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold)),
+                    Text("99999999999 Baht ",
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.all(
+                    10), // ทำให้ใน layout มีขอบด้านใน 10 ทำให้เนืื้อหาด้านในก็จะห่างออกจากขอบ
+
+                // สร้าง container อยากได้หลายกล่องก็เพิ่ม container เข้าไปอีก
+                decoration: BoxDecoration(
+                    color: Colors.red,
+                    borderRadius: BorderRadius.circular(
+                        10)), // ระบุคุณสมบัติของกล่อง container เช่น สี, โค้ง, ... (ยิ่ง เลข circular เยอะ ก็ยิ่งโค้งเยอะ)
+                height: 150,
+                child: Row(
+                  children: [
+                    Text("Outcome: ",
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold)),
+                    Text("15000 Baht ",
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ));
+
+
+Expanded
+    Container(
+            padding: const EdgeInsets.all(
+                10), // ทำให้ใน layout มีขอบด้านใน 10 ทำให้เนืื้อหาด้านในก็จะห่างออกจากขอบ
+
+            // สร้าง container อยากได้หลายกล่องก็เพิ่ม container เข้าไปอีก
+            decoration: BoxDecoration(
+                color: Colors.red,
+                borderRadius: BorderRadius.circular(
+                    10)), // ระบุคุณสมบัติของกล่อง container เช่น สี, โค้ง, ... (ยิ่ง เลข circular เยอะ ก็ยิ่งโค้งเยอะ)
+            height: 150,
+            child: Row(
+                children: [
+                Text("Outcome: ",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold)),
+                Expanded( // เพื่อเป็นการบอกว่า widget นี้สามารถขยายได้ เป็นระยะเท่ากับพื้นที่ที่เหลือ
+                    child: Text("15000 Baht ",
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.right),
+                )
+                ],
+            ),
+            ),
+
+SizedBox 
+    - เป็นการสร้างกล่องเปล่า 
+    - ต้องกำหนดความสูงด้วย 
+    - แทรกต่อจาก container แต่ละตัว 
+        Container(
+            ...
+        ),
+        SizedBox(height: 5), // จะเกิดกล่องเปล่าๆขึ้นมา ความสูงเท่ากับที่กำหนด
+        Container(
+            ...
+        ),
+        ....
+
+ติดตั้ง package 
+    flutter pub add <package name>
+    flutter pub add intl
+
+    Text('${NumberFormat("#,###.##").format(money)}')  //NumberFormat เป็น class ของ intl ทำการ set format ของตัวเลข # คือ บอกว่า เป็นเลขอะไรก็ได้ money ต้องรับค่าเป็น double หรือ int 
+
+Stateful Lifecycle 
+    initState() คือ method ที่ถูกเรียกให้ทำงาน ครั้งเดียวหลังจากที่ State ถูกสร้างเรียบร้อยแล้ว (หรือ widget ถูกสร้างขึ้นมาแล้ว) สามารถที่จะเปลี่ยนแปลงข้อมูลของ widget ได้ 
+    คือทำงานตอนที่ build app แต่หาก state มีการเปลี่ยนแปลง มันจะไม่ทำงานแล้ว จะให้ build ทำงานแทน
+    *** เป็น method แรกที่ทำงาน ถ้าอยากจะให้ทำงานอะไรก่อน ก็อยู่ที่นี่เลย เช่นการดึงข้อมูลเพื่อมาเตรียมแสดงผล เช่น ดึงข้อมูลการเงินมา เก็บไว้ พอ เข้า build ก็นำไป display เลย
+
+    build() คือ method ที่ใช้ในการสร้าง widget หรือ widget tree ของ application ถ้าต้องการให้ widget ของ application มีหน้าตาแบบใด ก็เขียนใน method build 
+    ซึ่ง build จะถูกเรียกใช้งานเมื่อมีการเปลี่ยนแปลงของข้อมูลใน state โดยทำงานผ่าน method setState *** หลังจากที่ initState() ทำงานเสร็จแล้ว ก็จะมาทำงานต่อที่ build เป็น method ที่ 2
+    ** เมื่อตัวแปรที่ประกาศ มีการเปลี่ยนแปลง (SetState()) ก็จะเรียก build ทุกครั้ง
+
+    dispose() คือ method ที่จะถูกเรียกใช้เมื่อ widget หรือ state หายไปจากหน้าแอพ หรือให้หยุดทำงานและนำออกจากระบบ
+
+    // ดูต่อที่นี่ https://www.youtube.com/watch?v=ZQUE9J2N_uo&list=PLltVQYLz1BMAnnTkCNozbG9_Tvv0Kf2jR&index=43

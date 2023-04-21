@@ -11,7 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         debugShowCheckedModeBanner: false, // remove Debug in top right
-        theme: ThemeData(primarySwatch: Colors.green),
+        theme: ThemeData(primarySwatch: Colors.purple),
         title: "My App",
         home: MyHomePage()
         );
