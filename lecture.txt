@@ -274,6 +274,39 @@ Listview Widget
 
     List คือ โครงสร้างข้อมูลที่จัดการเกี่ยวกับกลุ่มข้อมูล 
     Listview จะใช้ในกรณีที่แสดงรายการขนาดเล็ก (4-10 รายการ)
-    Listview.builder ใช้ในกรณัืที่มีการแสดงรายการจำนวนมาก โดยระบุจำนวนผ่านรายการ properties ชื่อ itemcount 
+    Listview.builder ใช้ในกรณัืที่มีการแสดงรายการจำนวนมาก โดยระบุจำนวนผ่านรายการ properties ชื่อ itemcount *** ถ้าไม่กำหนดขนาด จะได้ขนาดที่ไม่่มีสิ้นสุด
     ListTile กำหนดรายละเอียดต่างๆของ list แต่ละรายการ เช่น หัวข้อ(title), หัวข้อย่อย (subtitle)
 
+
+การนำภาพ internal เข้ามาใช้ 
+    1. ไปที่ pubspec.yaml 
+        ไปที่ comment 
+        # To add assets to your application, add an assets section, like this:
+        # assets:
+        #   - images/a_dot_burr.jpeg
+        #   - images/a_dot_ham.jpeg
+
+        ให้พิมพ์คำสั่งเพิ่ม 
+        assets:
+            - <path to your file> // เป็น path ของไฟล์ในโปรเจค โดยมองจากชั้น root ต้องเติม / ท้าย folder สุดท้ายด้วย
+
+ใน ListTile มี properties ชื่อว่า  leading เพื่อนำรูปภาพมาแสดง 
+    ListTile(
+        leading: Image.assets(<image path>), // สามารถใชั Image(image: NetworkImage(... ได้
+        ...
+    )
+
+ใน ListTile มี onTap คือ event ให้ใช้ โดย value จะรับเป็น function
+
+        ListTile(
+            leading: MyAppImg(
+                imageUrl: menus[index].imageUrl,
+                width: 100,
+                height: 100),
+            title: Text("${menus[index].name}"),
+            subtitle: Text("ราคา: ${menus[index].price} บาท"),
+            onTap: () => {
+            print(menus[index].name),
+            print(menus[index].price),
+            },
+        )
