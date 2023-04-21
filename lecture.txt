@@ -476,4 +476,66 @@ Stateful Lifecycle
 
     dispose() คือ method ที่จะถูกเรียกใช้เมื่อ widget หรือ state หายไปจากหน้าแอพ หรือให้หยุดทำงานและนำออกจากระบบ
 
-    // ดูต่อที่นี่ https://www.youtube.com/watch?v=ZQUE9J2N_uo&list=PLltVQYLz1BMAnnTkCNozbG9_Tvv0Kf2jR&index=43
+
+Asynchronous
+    ใน flutter มีการทำงานไปเรื่อยๆ โดยที่ไม่ต้องรอ function ก่อนหน้าทำเสร็จก่อน 
+    หมายถึง สามารถทำงาน function ถัดไป และกลับมาทำ function ที่ข้ามไปได้
+
+    จะมี 2 ประเภท 
+        Synchronous 
+            คือการทำงานตามลำดับ สมมติมีงาน A และงาน B โดยจะให้เริ่มทำงานใน A ให้เสร็จก่อน จนกระทั่งงาน A เสร็จ ค่อยทำงาน B 
+        Asynchronous (non-blocking)
+            คืิอการทำงานที่สามารถไปทำงานอื่นได้ แล้วค่อยย้อนกลับมาทำงานเก่า เช่น สามารถทำงาน A และ B พร้อมๆกันได้ โดยที่ไม่ต้องรอให้ A เสร็จ 
+    ใน Flutter มี function 
+        - Future 
+            - หมายถึง object หรือข้อมูลที่ได้จากการทำงานในรูปแบบ Asynchronous หรือความหมายคือ การนำค่าที่จะเกิดขึ้นฝนอนาคตมาใช้งาน 
+            ซึ่งจะทำการเช็คข้อมูลที่เกิดขึ้นผ่าน State เช่น complated, incomplated 
+
+            การประกาศ 
+
+                Future <return type> <ชื่อ Future> async {
+                    await ...); //await คือรอให้บรรทัดนี้ทำงานจนเสร็จ ใช้งานภายใต้ async
+                }
+            case study 
+                โจทย์ จำลองการดึงข้อมูลผู้ใช้จาก DB 
+                    - เริ่มดึง 
+                    - หน่วงเวลา 10 วิ 
+                    - แสดงผล 
+                    - ทำงานอย่างอื่นต่อไป 
+            
+            แบบไม่ใช้ Future 
+
+                void main() {
+                    print(loginUser());
+                }
+
+                List<String> loginUser() {
+                    List<String> users = getUserFromDB();
+                    return users;
+                }
+
+                List<String> getUserFromDB() {
+                    return ["Thanachot", "Arm"];
+                }
+            
+            แบบใช้ Future 
+
+            void main() async { // void ไม่ต้องประกาศ Future ถูกแล้ว
+                print(await loginUserAsync());
+                print("doing another task...");
+            }
+
+            // ต้องระบุ Future ที่ function ด้วย เพื่อให้ code รอค่าที่จะมาจาก function getFutureUser ที่เป็น asynchronous  ที่ return Future value ได้
+            Future<List<String>> loginUserAsync() async {
+            return await getFutureUser();
+            }
+
+            // ข้อมูลที่จะได้ในอนาคต ต้องรอ 10 วิ
+            Future<List<String>> getFutureUser() {
+            List<String> users = [
+                "Thanachot Tesjaroen",
+                "Patcharakorn sukson",
+            ];
+            // return Future.value(users); // การ return แบบปกติ ให้ตรงกับ type ที่ defined
+            return Future.delayed(Duration(seconds: 10), () => users); // delay 10 seconds
+            }
