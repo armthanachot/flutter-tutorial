@@ -1,0 +1,278 @@
+create project 
+    cli: flutter create <name all lowercase> หรือถ้าต้องการแบ่งคำให้แบ่งด้วย _
+    or 
+    cmd shift p -> flutter new project 
+
+
+structure 
+    lib/main.dart นี่คือไฟล์ main ที่เราจะเริ่มศึกษา 
+
+
+luanch emulator 
+    ใช้ xcode เพื่อ emulate ios device
+    1. download xcode 
+    2. open xcode 
+    3. คลิกที่ขวาบนจอ mac ตรง xcode
+    4. เลือก open developer tools 
+    5. เลือก simulator มันจะ run iphone ขึ้นมา
+
+ตอน run ไปที่ lib/main.dart 
+fn f5 จะทำการ run project ขึ้นมา 
+หรือ flutter run 
+    
+structure 
+    lib 
+        เก็บไฟล์ที่แยกหน้าแอพต่างๆ ที่มีนามสกุล .dart เข่น main.dart 
+    pubspec.yaml
+        สำหรับการตั้งค่าโปรเจค หรือใช้งาน lib ต่างๆ (คล้ายๆ go.mod)
+    android, ios 
+        จัดเก็บโปรเจคของ application แต่ละระบบเอาไว้ 
+    
+หลังจาก build ไปแล้ว สามารถเปลี่ยนชื่อ app ได้ 
+    android 
+        ไปที่ android -> app -> src -> main -> AndroidManifest.xml 
+        กำหนดชื่อ app ใหม่ใน android:label
+        build 
+
+    ios 
+
+change icon 
+    android
+        android -> app -> src -> main -> res -> พวก mipmap คือ icon ทั้งหมด แต่ขนาดต่างกัน
+    
+
+Widget 
+    คือแนวคิดในการแบ่ง ui เป็นส่วนๆ เข่น ปุ่ม, ข้อความ เป็นต้น 
+    โดย widget แต่ละตัว จะมี properties หลากหลาย เข่น สี ขอบ ส่วนโค้ง 
+
+Widget พื้นฐานที่มีใน dart 
+    Text Widget สำหรับแสดงข้อความ 
+    RaisedButton สำหรับการจัดการปุ่ม 
+    Row, Column สำหรับสร้าง layout (เค้าโครงหน้าแอพ) แบบแนวตั้งและแนวนอน 
+    Stak สร้าง layout แบบซ้อนทับ หรือเรียงลำดับ 
+    Container กล่องที่รวบรวม widget ต่างๆ 
+
+ใน flutter จะมี widget ที่ชื่อว่า material design 
+
+==============
+
+import 'package:flutter/material.dart'; //ต้อง import มา เพื่อใช้งาน material
+
+void main() {
+  runApp(app) // ภายใต้ runApp ต้องเป็น Widget ที่เราต้องการให้ทำงาน 
+}
+
+ex.
+    MaterialApp จะใช้ในการควบคุมการแสดงผลในหน้าแอพ ต้องประกาศ
+
+    void main() {
+        var app = MaterialApp(
+            title: "My App",
+            home: Text("This My App"),
+        );
+        runApp(app);
+    }
+
+
+*** จะเห็นว่า app ยังไม่มีเค้าโครงเลย ***
+
+
+Scaffold 
+    เป็น widget หน้าต่างสำเร็จรูป สำหรับการจัด layout หรือโครงสร้างของหน้าแอพ มีการคำนวณระยะห่างของ app กับ emulator ให้อัตโนมัติ 
+
+    runApp(MaterialApp(
+        home: Scaffold( // home คือจะให้แสดงผลอะไรในหน้า home ก็ใส่ widget เข้าไป ในที่นี้ใส่ widget scaffold เพื่อให้สามารถจัดการหน้าแอพภายใต้ scaffold ต่อไปได้
+            title: "Hello",
+            appBar: AppBar(title: Text("Text")),
+            body:Text("Hello Flutter")
+        ),
+        theme: ThemeData(primarySwatch:Colors.green) // เปลี่ยนธีมแอพ
+    ))
+
+การสร้าง widget ขึ้นมาใช้เอง
+    สามารถ สร้างได้ 2 ประเภท 
+    - Stateless Widget 
+        เป็น widget ที่ไม่สามารถเปลี่ยนแปลงค่าได้ ใช้สำหรับสร้าง Widget แบบคงที่ เช่น Text, icon เป็นต้น 
+    - Stateful widget 
+        เป็น widget ที่สามารถเปลี่ยนแปลงค่าได้ หรือทำงานได้หลาย State เช่น Checkbox, Slider, TextField เป็นต้น 
+
+Stateless Widget
+    ให้พิมพ์​ stl จะมี suggest ขึ้นมา แนะนำคำสั่ง Flutter Create Stateless Widget ประมาณนี้ ก็เลือกไป จะมี template ขึ้นมาให้เรา
+
+
+    ex.
+        import 'package:flutter/src/widgets/framework.dart';
+        import 'package:flutter/src/widgets/placeholder.dart';
+
+        class MyWidget1 extends StatelessWidget {
+        const MyWidget1({super.key});
+
+        @override
+        Widget build(BuildContext context) { // return ค่าเป็น widget 
+            return Container(); // default อาจจะเป็นตัวอื่น ในที่นี้เปลี่ยนเป็น Container เพื่อใช้งานสำหรับแอพ  
+        }
+        }
+
+    ทำการสร้าง myApp.dart พร้อมสร้าง stateless widget 
+
+        class MyApp extends StatelessWidget {
+        const MyApp({super.key});
+
+        @override
+        Widget build(BuildContext context) {
+            return MaterialApp( // ทำการ return MaterialApp ออกไป 
+            debugShowCheckedModeBanner: false, // remove Debug in top right
+            theme: ThemeData(primarySwatch: Colors.green),
+            title: "My App",
+            home: Scaffold(
+                appBar: AppBar(
+                title: Text("My App"),
+                ),
+                body: Text("Body Part"),
+            ));
+        }
+        }
+
+    main.dart 
+        void main() {
+            const app = MyApp(); //เรียกใช้ MyApp ที่แยกออกไปเป็น widget class
+            runApp(app);
+        }
+
+Center Widget 
+    เป็น widget ที่ครอบ widget อื่นๆ ทำให้ widget ที่ถูกครอบ อยู่กลางหน้าจอ (x,y) = (0,0)
+
+    ex. 
+        Scaffold(
+            body: Center(
+                child: Text("test")
+            )
+        )
+
+Text วิธีการเพิ่มขนาดและเปลี่ยนสี
+    Text(
+        "text", 
+        style: TextStyle(
+            fontSize: 30,
+            color: Colors.Blue,
+            ...
+        )
+    )
+
+
+***** Tips *****
+    หากต้องการ child มากกว่า 1 ก็ให้นำ widget ที่รองรับ child มากกว่า 1 เข้ามาใช้ เช่น column, row 
+    Scaffold(
+            appBar: AppBar(
+              title: Text("My App"),
+            ),
+            body: Center(
+              child: Column( //เนื่องจาก center รับ child แค่ตัวเดียว แต่อยากได้ child มากกว่า 1 เลยต้องนำ column มาใช้ โดยใน column จะมี children ใ้ห้ใช้ เปรียบเสมือน child
+              // แต่พอเป็น column จุด start ของ column จะเป็น บนสุด จะไม่ใช่กลางจอ แต่ x ยัง = 0 อยู่ แต่ y จะไม่ใช่ จะกลายเป็นบนสุด
+                children: [
+                  Text(
+                    "Body Part",
+                    style: TextStyle(
+                        fontSize: 30,
+                        color: Colors.green,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            )));
+
+
+การนำภาพเข้ามาแสดงผล
+    Image
+        Image(
+            image: NetworkImage(
+            "https://images.unsplash.com/photo-1681673211977-2d3274d07ff9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60",
+            ),
+            width: 400, // เนื่องจากหน่วยเป็น double ไม่มีหน่วย px, %, ... เหมือนกับ css ทำให้เวลาที่ตัองทำ responsive ก็อาจจะต้องคำนวณกับขนาดหน้าจอ ความกว้าง ความยาว ด้วย 
+            height: 400, // เนื่องจากหน่วยเป็น double ไม่มีหน่วย px, %, ... เหมือนกับ css ทำให้เวลาที่ตัองทำ responsive ก็อาจจะต้องคำนวณกับขนาดหน้าจอ ความกว้าง ความยาว ด้วย 
+        )
+
+column
+    เป็น widget ที่รับเอา Widget แื่นๆ มาจัดเรียงในแนวตั้ง หรือในแนวดิ่ง 
+
+    body: Center(
+        child: Column(
+            mainAxisAlignment: MainAxisAlignment.center, // ถ้าไม่ระบุแบบนี้ default จะเป็น statrt คือชิดข้างบน properties จะคล้ายๆกับ flex box ก็จะมีพวก space between, space around หรือ อะไรต่างๆคล้ายๆกัน
+            children: [
+                widget1, //อาจจะเอา widget ที่สร้างเองขึ้นมา มาใส่ก็ได้
+                widget2, //อาจจะเอา widget ที่สร้างเองขึ้นมา มาใส่ก็ได้
+                widget3, //อาจจะเอา widget ที่สร้างเองขึ้นมา มาใส่ก็ได้
+            ]
+        )
+    )
+
+Stateful Widget 
+    - widget ที่สามารถเปลี่ยนแปลงค่าได้ หรือทำงานหลาย state โดย state คือตัวแปรหรือข้อมูล ที่ใช้ควบคุมการทำงาน ของ แอพให้โต้ตอบกับ user ได้ 
+    มีการใช้คพสั่ง setState() เพื่อบอกว่าในแอพมีบางอย่างเปลี่ยนแปลง เกิดขึ้นที่ State สามาถทำให้ข้อมูลในหน้าแอพเปลี่ยนแปลงและทำงานต่อเนื่องได้ โดยที่
+    ไม่ต้อง build หรือ restart app (เปลี่ยนแปลงหน้าตาได้)
+    - state สำหรับ ควบคุมการทำงานของแอพตามที่ต้องการ เช่น อัพเดตการทำงานของหน้าจอ หรือ widget ผ่าน state นั่นเอง 
+    - widget หน้าตาของแอพ
+
+    - มีการทำปฏิสัมพันธ์กับ user เช่น checkbox, input text, กดปุ่มแล้วหน้าจอเปลี่ยนค่า เช่น ปุ่ม + ที่มีมาให้ตอน initial app
+        *** แต่ถ้า stateless คือ เหมือน static เช่น การ fix หัวขัอ หรืออะไรต่างๆ ***
+
+Button & Event 
+    floatinActionButtonFloatingActionButton(
+        onPressed:(){
+
+        },
+        child:Icon(Iconds.add) หรือ 
+        chile: Text("my text")
+    )
+
+    class MyHomePage extends StatefulWidget {
+    const MyHomePage({super.key});
+
+    @override
+    State<MyHomePage> createState() => _MyHomePageState();
+    }
+
+    class _MyHomePageState extends State<MyHomePage> {
+    int _num = 0; // สร้่าง state
+    @override
+    Widget build(BuildContext context) {
+        // สร้าง state
+        return Scaffold(
+            appBar: AppBar(
+            title: Text("My App"),
+            ),
+            body: Center(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                Text("This is Current Num: $_num"),
+                FloatingActionButton(
+                    onPressed: () => {
+                    setState(
+                        () => {this._num++},
+                    ) // เมื่อใช้คำสั่ง setState และเมื่อมีการเปลี่ยนแปลงตัวแปร มันจะวิ่งไปหาว่า ตัวแปรที่เปลี่ยนแปลง ถูกเรียกใช้ตรงไหนบ้าง ก็จะเปลี่ยนแปลงทั้งหมดทุกจุดตามกันไปด้วย
+                    }, // หากจะเรียกใช้ function ก็เรียกแค่ชื่อ function ได้เลย เป็น onPressed:AddNumber
+                    child: Icon(Icons.plus_one),
+                )
+                ],
+            ),
+            ));
+    }
+    // หรือ เขียนแยก function ก็ได้ 
+
+    void AddNumber() {
+        setState(() {
+        this._num++;
+        });
+      }
+    }
+ 
+
+
+Listview Widget
+    คือ widget ที่มีการแสดงผลเป็นรายการ เมื่อมีรายการมากๆ เกินพื้นที่ของจอ สามารถ scroll down หรือ up เพื่อดูรายการก่อนหน้าได้ 
+
+    List คือ โครงสร้างข้อมูลที่จัดการเกี่ยวกับกลุ่มข้อมูล 
+    Listview จะใช้ในกรณีที่แสดงรายการขนาดเล็ก (4-10 รายการ)
+    Listview.builder ใช้ในกรณัืที่มีการแสดงรายการจำนวนมาก โดยระบุจำนวนผ่านรายการ properties ชื่อ itemcount 
+    ListTile กำหนดรายละเอียดต่างๆของ list แต่ละรายการ เช่น หัวข้อ(title), หัวข้อย่อย (subtitle)
