@@ -276,3 +276,4 @@ Listview Widget
     Listview จะใช้ในกรณีที่แสดงรายการขนาดเล็ก (4-10 รายการ)
     Listview.builder ใช้ในกรณัืที่มีการแสดงรายการจำนวนมาก โดยระบุจำนวนผ่านรายการ properties ชื่อ itemcount 
     ListTile กำหนดรายละเอียดต่างๆของ list แต่ละรายการ เช่น หัวข้อ(title), หัวข้อย่อย (subtitle)
+

@@ -11,69 +11,42 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _num = 0;
+  // สร้าง state
+  int lastIndex = 0;
+  List<Widget> more_display = [];
+
+  // แสดงผลข้อมูล
   @override
   Widget build(BuildContext context) {
+    List<Widget> display = [];
+    // สร้างกลุ่มข้อมูล
+    for (int i = 0; i < 10; i++) {
+      display.add(Text("Row $i", style: TextStyle(fontSize: 20)));
+      lastIndex++;
+    }
+
+    display.addAll(more_display);
     return Scaffold(
       appBar: AppBar(
         title: Text("My App"),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            Text(
-              "Body Part",
-              style: TextStyle(
-                  fontSize: 30,
-                  color: Colors.green,
-                  fontWeight: FontWeight.bold),
-            ),
-            MyAppImg(
-                imageUrl:
-                    "https://images.unsplash.com/photo-1681673211977-2d3274d07ff9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
-                width: 400,
-                height: 200),
-            Text("This is Current Num: $_num"),
-            if (this._num < 0) Text("Error Number Cannot Less Than 0", style: TextStyle(color: Colors.red, fontSize: 20),), // add if condition
-            Row(
-              children: [
-                FloatingActionButton(
-                  onPressed: SetZero,
-                  child: Icon(Icons.exposure_zero_sharp),
-                ),
-                FloatingActionButton(
-                  onPressed: DecreaseNumber,
-                  child: Icon(Icons.exposure_minus_1),
-                )
-              ],
-            )
-          ],
+        child: ListView( // เมื่อ data เกินหน้าจอ ก็สามารถ scroll ดูได้ down up
+          children: display,
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: AddNumber,
-        child: Icon(Icons.plus_one),
-        backgroundColor: Colors.blue,
+        onPressed: getMoreList,
+        child: Icon(Icons.more),
       ),
     );
   }
 
-  void AddNumber() {
-    setState(() {
-      this._num++;
-    });
-  }
-
-  void DecreaseNumber() {
-    setState(() {
-      this._num--;
-    });
-  }
-
-  void SetZero() {
-    setState(() {
-      this._num = 0;
-    });
+  void getMoreList() {
+    for (int i = lastIndex; i < lastIndex + 10; i++) {
+      setState(() {
+        more_display.add(Text("Row $i", style: TextStyle(fontSize: 20),));
+      });
+    }
   }
 }
