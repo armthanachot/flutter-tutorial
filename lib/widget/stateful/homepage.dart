@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mybasicapp/widget/stateless/horizontal_card.dart';
-import 'package:mybasicapp/widget/stateless/moneyBox.dart';
+import 'package:http/http.dart' as http;
+import 'package:mybasicapp/jokeToJson.dart';
+import 'package:mybasicapp/widget/stateless/joke.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
@@ -10,59 +11,55 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // สร้าง state
+  Joke _dataFromApi = Joke();
+  @override
+  void initState() {
+    super.initState();
+    getJoke();
+  }
+
+  Future<Joke> getJoke() async {
+    var url = Uri.http(
+        "official-joke-api.appspot.com", "/random_joke", {'q': '{http}'});
+    var response = await http.get(url);
+    _dataFromApi = jokeFromJson(response.body);
+    return _dataFromApi;
+  }
 
   // แสดงผลข้อมูล
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("บัญชีของฉัน"),
+          title: Text("Joke"),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(
-              8.0), // ทำให้มี space จาก ขอบ layout ทุกด้าน 8.0 (required field padding)
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              MoneyBox(
-                boderRadius: 10,
-                boxHeight: 150,
-                money: 99999999,
-                moneyFrontColor: Colors.white,
-                moneyFrontSize: 20,
-                title: "Balance",
-                titleFrontColor: Colors.white,
-                titleFrontSize: 20,
-                boxColor: Colors.blueAccent,
-                currency: "baht",
-              ),
-              MoneyBox(
-                boderRadius: 10,
-                boxHeight: 150,
-                money: 99999999.88,
-                moneyFrontColor: Colors.white,
-                moneyFrontSize: 20,
-                title: "Income",
-                titleFrontColor: Colors.white,
-                titleFrontSize: 20,
-                boxColor: Colors.green,
-                currency: "baht",
-              ),
-              MoneyBox(
-                boderRadius: 10,
-                boxHeight: 150,
-                money: 12000.88,
-                moneyFrontColor: Colors.white,
-                moneyFrontSize: 20,
-                title: "Outcome",
-                titleFrontColor: Colors.white,
-                titleFrontSize: 20,
-                boxColor: Colors.red,
-                currency: "baht",
-              ),
-            ],
-          ),
+        body: FutureBuilder(
+          future: getJoke(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              var result = snapshot.data;
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    JokeDisplay(
+                      id: _dataFromApi.id,
+                      type: _dataFromApi.type,
+                      setup: _dataFromApi.setup,
+                      punchline: _dataFromApi.punchline,
+                      boxHeight: 200,
+                      boxColor: Colors.orange,
+                      fontSize: 20,
+                      fontColor: Colors.white,
+                      boderRadius: 10,
+                    )
+                  ],
+                ),
+              );
+            } else {
+              return LinearProgressIndicator();
+            }
+          },
         ));
   }
 }

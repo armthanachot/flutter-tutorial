@@ -1,11 +1,11 @@
-// import 'package:flutter/material.dart';
-// import 'package:mybasicapp/widget/myApp.dart';
+import 'package:flutter/material.dart';
+import 'package:mybasicapp/widget/myApp.dart';
 
 void main() async {
-  // const app = MyApp();
-  // runApp(app);
-  print(await loginUserAsync());
-  print("doing another task...");
+  const app = MyApp();
+  runApp(app);
+//   print(await loginUserAsync());
+//   print("doing another task...");
 }
 
 List<String> loginUser() {

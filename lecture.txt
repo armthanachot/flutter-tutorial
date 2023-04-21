@@ -539,3 +539,81 @@ Asynchronous
             // return Future.value(users); // การ return แบบปกติ ให้ตรงกับ type ที่ defined
             return Future.delayed(Duration(seconds: 10), () => users); // delay 10 seconds
             }
+
+
+https://exchangeratesapi.io/ เป็น openAPI สำหรับดึง อัตราแลกเปลี่ยน
+ตอนนี้ต้อง subscribe เพื่อเอา api key ก็เลือก plan 0 ไปก็ได้ 
+
+
+https://apipheny.io/free-api/ => web ที่รวม free api 
+
+
+    https://official-joke-api.appspot.com/random_joke free api without key 
+
+    http เป็น package สำหรับใช้งานการ request http 
+        flutter pub add http 
+            เนื่องจากต้องมีการดึง value มา set ก่อน จึงต้องใช้ stateful เพื่อดึง ข้อมูลมา set ที่ initState 
+
+    @override
+    void initState() {
+        super.initState();
+        getLatedExchangeRate();
+    }
+
+    Future<void> getLatedExchangeRate() async {
+        var url = Uri.http("official-joke-api.appspot.com", "/random_joke",
+            {'q': '{http}'});
+        var response = await http.get(url);
+        print(response.body);
+    }
+
+https://quicktype.io/  เป็น web ที่ใช้ในการแปลง json เป็น code ของภาษาต่างๆ 
+    - open quicktype
+    - เลือก JSON ตรงฝั่งซ้าย และวาง json 
+    - ฝั่งขวา เลือกภาษา Dart และ เลือก switch Make all properties optional ทำให้เมื่อในอนาคตถ้า json มีการปรับ structure จะไม่กระทบกับแอพเรา 
+    - พอได้ code ก็ copy มาสร้างไฟล์เลย .dart
+
+
+Null Coalescing มี 3 วิธี
+    หากตัวแปรมีค่า null จะเปลี่ยนเป็นค่า เริ่มต้นแทน 
+        String name; 
+        print(name??"Thanachot"); // เมื่อ name เป็น null จะใช้เป็น Thanachot แทน แต่ใช้ได้ครั้งเดียว เพราะใช้ใน print เท่านั้น
+
+    หากตัวแปรมีค่า null จริงๆ จะให้กำหนดค่า default เข้าไปได้เลย 
+        String name;
+        name??="Thanachot"; // หาก name เป็น null จะกำหนดค่าเป็น Thanachot แทน 
+        print(name);
+    
+    เช็ค object  ว่าเป็น null หรือไม่ ถ้าเป็น null จะข้ามไป 
+    class Employee {
+        void showData(){
+            print("Hello Emp");
+        }
+    }
+    // แบบเต็ม
+    Employee emp; // ทำแบบนี้จะเป็น null เพราะไม่ได้ assign value คือไม่ได้ new instant เลยไม่เกิดเป็น object ซึ่งถ้าจะไม่ต้องการให้เป็น null ต้องเป็น Employee emp = Employee();
+    if(emp != null) {
+        emp.showData();
+    }
+    // แบบสั้น 
+    emp?.showData();
+
+หลังจากที่ ใช้ quicktype แล้ว 
+
+Joke _dataFromApi = Joke(); // สร้าง state ที่มี type เป็น Joke 
+  @override
+  void initState() {
+    super.initState();
+    getLatedExchangeRate();
+  }
+
+  Future<void> getLatedExchangeRate() async {
+    var url = Uri.http(
+        "official-joke-api.appspot.com", "/random_joke", {'q': '{http}'});
+    var response = await http.get(url);
+    print(response.body);
+    _dataFromApi = jokeFromJson(response.body); // ใช้ ตัวแปรรับค่าจาก jokeFromJson ซึ่งเป็น class ที่สร้างจาก quicktype
+    print(_dataFromApi.id);
+    print(_dataFromApi.setup);
+    print(_dataFromApi.punchline);
+  }
