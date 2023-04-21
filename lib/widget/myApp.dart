@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:mybasicapp/widget/myAppImg.dart';
+import 'package:mybasicapp/widget/stateless/myAppImg.dart';
 import 'package:mybasicapp/widget/stateful/homepage.dart';
 
 class MyApp extends StatelessWidget {
