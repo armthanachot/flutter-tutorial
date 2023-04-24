@@ -520,7 +520,7 @@ Asynchronous
             
             แบบใช้ Future 
 
-            void main() async { // void ไม่ต้องประกาศ Future ถูกแล้ว
+            void main() async { // void ไม่ต้องประกาศ Future ถูกแล้ว แต่ถ้าไม่ใช้ void จะต้องประกาศ future 
                 print(await loginUserAsync());
                 print("doing another task...");
             }
@@ -617,3 +617,49 @@ Joke _dataFromApi = Joke(); // สร้าง state ที่มี type เป
     print(_dataFromApi.setup);
     print(_dataFromApi.punchline);
   }
+
+
+
+
+  FutureBuilder 
+    ใช้สำหรับแสดงผลหน้าจอขณะที่รอรับค่าจาก Future โดย FutureBuilder จะรอรับค่าจาก Future และแสดงผลบนหน้าจอตามที่กำหนดไว้ โดยการใช้ FutureBuilder 
+    จะช่วยให้เราสามารถแสดงผลตามสถานะของ Future ได้อย่างถูกต้อง เช่น กรณีที่ Future ยังไม่เสร็จสิ้น (Future กำลังโหลดข้อมูล) หรือ Future ที่เสร็จสิ้นแล้ว (Future โหลดข้อมูลเสร็จสมบูรณ์) 
+    หรือกรณีที่ Future โหลดข้อมูลไม่สำเร็จ (Future โหลดข้อมูลไม่สำเร็จ) โดยเราสามารถกำหนด Widget ที่แสดงผลในแต่ละสถานะได้ด้วยตัวเอง เช่น CircularProgressIndicator 
+    หรือ Error Widget ตามที่เราต้องการแสดงผลในแต่ละสถานะของ Future นั้น ๆ
+    
+     Future<Joke> getJoke() async {
+        var url = Uri.http(
+            "official-joke-api.appspot.com", "/random_joke", {'q': '{http}'});
+        var response = await http.get(url);
+        _dataFromApi = jokeFromJson(response.body);
+        return _dataFromApi;
+    }
+  
+    FutureBuilder(
+            future: getJoke(),
+            builder: (context, snapshot) { // ถ้า if ยังไม่เป็นจริง จะให้แสดง LinearProgressIndicator() เหมือนรอค่าจาก future 
+                if (snapshot.connectionState == ConnectionState.done) {
+                var result = snapshot.data;
+                return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                    children: [
+                        JokeDisplay(
+                        id: _dataFromApi.id,
+                        type: _dataFromApi.type,
+                        setup: _dataFromApi.setup,
+                        punchline: _dataFromApi.punchline,
+                        boxHeight: 200,
+                        boxColor: Colors.orange,
+                        fontSize: 20,
+                        fontColor: Colors.white,
+                        boderRadius: 10,
+                        )
+                    ],
+                    ),
+                );
+                } else {
+                return LinearProgressIndicator();
+                }
+            },
+            )
